@@ -21,6 +21,7 @@
       - bat
       - fzf
       - zoxide
+      - fastfetch
     state: present
 
 - name: Check if Starship is installed

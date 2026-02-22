@@ -1,3 +1,8 @@
+# Welcome message
+if [ -x /usr/bin/fastfetch ]; then
+    fastfetch
+fi
+
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="" # Disabled because Starship is used
 plugins=(git)
@@ -8,8 +13,18 @@ eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-# Aliases
-alias ll='ls -alF'
-alias la='ls -A'
+# Colors and LS options
+export LS_OPTIONS='--color=auto'
+if [ -x /usr/bin/dircolors ]; then
+    eval "$(dircolors)"
+fi
+
+# Aliases from .bashrc
+alias ls='ls $LS_OPTIONS'
+alias ll='ls $LS_OPTIONS -l'
+alias la='ls $LS_OPTIONS -lA'
+alias mc='mc -b'
+alias bat='batcat'
+
+# Additional navigation aliases
 alias l='ls -CF'
-alias bat='batcat' # Fix for Debian/Ubuntu package naming
