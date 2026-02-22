@@ -1,6 +1,9 @@
 # Proxmox Homelab
 
-This repository manages a Proxmox VE-based homelab hosted on physical ASUS hardware. It follows a **Declarative Provisioning** model using Terraform for infrastructure and Ansible for configuration.
+![Proxmox Dashboard](docs/proxmox.png)
+
+This repository manages a Proxmox VE-based homelab hosted on physical ASUS hardware.
+ It follows a **Declarative Provisioning** model using Terraform for infrastructure and Ansible for configuration.
 
 ## 📚 Documentation Index
 
