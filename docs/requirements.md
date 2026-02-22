@@ -1,4 +1,4 @@
-Based on your current Proxmox setup and the hardware configuration of your ASUS machine, here is a `requirements.md` file. This document outlines the technical specifications, current service architecture, and the intended project structure for your homelab.
+Based on my current Proxmox setup and the hardware configuration of my ASUS machine, here is a `requirements.md` file. This document outlines the technical specifications, current service architecture, and the intended project structure for my homelab.
 
 ---
 
@@ -85,11 +85,8 @@ homelab/
 * **Redundancy:** Future expansion should utilize the remaining 5 SATA ports for disk redundancy (RAIDZ).
 
 ---
-To add automatic provisioning to your Proxmox homelab, the architecture will shift from manual LXC/VM creation to a **GitOps and Infrastructure-as-Code (IaC)** workflow.
+To add automatic provisioning to the Proxmox homelab, the architecture will shift from manual LXC/VM creation to a **GitOps and Infrastructure-as-Code (IaC)** workflow.
 
-Based on your hardware and the requested project structure, here is the updated `requirements.md` including the **Provisioning Layer**.
-
----
 
 # Requirements: Proxmox Homelab Project
 
@@ -161,11 +158,9 @@ Current services to be migrated to the automated provisioning manifest:
 Before the `external/` Terraform code can run, you must have a "Gold Image" or Template on your Proxmox host. I recommend adding a script to your `scripts/` folder that downloads an Ubuntu Cloud-Image and converts it into a Proxmox template (`template-1000`).
 To ensure that this infrastructure can be rebuilt from scratch using only the repository, you need to bridge the gap between "bare metal" and the running Proxmox environment. Based on the project structure you are following, you must implement **Pre-Provisioning** and **State Management**.
 
-Here are the essential components that should be added to your `requirements.md`:
 
 ### 1. Automated Base OS Installation (Pre-Seed/Kickstart)
 
-Since you are using an ASUS machine with a Sabertooth motherboard, you need a way to install Proxmox (Debian) without manual interaction.
 
 * **PXE Boot/iPXE:** Add a `metal/pxe_server` role to handle network booting for new nodes.
 * **Debian Preseed:** A configuration file in `metal/roles/prerequisites/files/` that automates the Proxmox installer (setting up the `/dev/mapper/pve-root` partition and `vmbr0` bridge).
@@ -223,4 +218,3 @@ homelab/
 | **Compute** | Creating LXCs/VMs | Terraform / OpenTofu |
 | **Apps** | Installing n8n, Gitea, etc. | Ansible / Docker-Compose |
 
-By adding these, the `requirements.md` transforms from a simple "list of what I have" to a **"blueprint for restoration."** Would you like the **Ansible task** for automatically configuring the NVIDIA GPU passthrough for your `openwebui` container?
