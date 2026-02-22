@@ -1,0 +1,48 @@
+all:
+  vars:
+    ansible_user: root # Default user for LXCs and PVE host
+    # ansible_ssh_private_key_file: ~/.ssh/id_ed25519
+
+proxmox:
+  hosts:
+    pve-host:
+      ansible_host: 192.168.88.10
+
+lxc_containers:
+  children:
+    infrastructure:
+      hosts:
+        cloudflared:
+          ansible_host: 192.168.88.247
+        gitea:
+          ansible_host: 192.168.88.223
+        jenkins:
+          ansible_host: 192.168.88.222
+    databases:
+      hosts:
+        postgresql:
+          ansible_host: 192.168.88.231
+        mongodb:
+          ansible_host: 192.168.88.227
+    storage:
+      hosts:
+        minio:
+          ansible_host: 192.168.88.228
+    monitoring:
+      hosts:
+        prometheus:
+          ansible_host: 192.168.88.243
+        grafana:
+          ansible_host: 192.168.88.242
+    apps:
+      hosts:
+        n8n:
+          ansible_host: 192.168.88.246
+        paperless-ngx:
+          ansible_host: 192.168.88.241
+        trilium:
+          ansible_host: 192.168.88.240
+        openwebui:
+          ansible_host: 192.168.88.206
+        ollama:
+          ansible_host: 192.168.88.216

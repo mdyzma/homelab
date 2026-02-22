@@ -1,0 +1,5 @@
+---
+- name: Restart LXC
+  command: "pct restart {{ item.vmid }}"
+  loop:
+    - { vmid: 116 }

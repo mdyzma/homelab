@@ -1,0 +1,16 @@
+---
+- name: Configure Proxmox Host
+  hosts: proxmox
+  become: yes
+  roles:
+    - pve-init
+    - zfs-setup
+    - pve-bridge
+    - nvidia-passthrough
+    - lxc-gpu-patch
+
+- name: Common Hardening for LXC Containers
+  hosts: lxc_containers
+  become: yes
+  roles:
+    - lxc-common

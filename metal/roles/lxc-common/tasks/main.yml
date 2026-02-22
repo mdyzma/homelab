@@ -1,0 +1,59 @@
+---
+- name: Update apt cache and upgrade packages
+  apt:
+    upgrade: dist
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Install common utility packages
+  apt:
+    name:
+      - zsh
+      - git
+      - curl
+      - wget
+      - vim
+      - sudo
+      - htop
+      - net-tools
+    state: present
+
+- name: Set system timezone
+  timezone:
+    name: "{{ timezone | default('Europe/Warsaw') }}"
+
+- name: Check if Oh My Zsh is installed
+  stat:
+    path: /root/.oh-my-zsh
+  register: oh_my_zsh_stat
+
+- name: Install Oh My Zsh for root
+  shell: |
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+  when: not oh_my_zsh_stat.stat.exists
+
+- name: Change root shell to zsh
+  user:
+    name: root
+    shell: /bin/zsh
+
+- name: Set up .zshrc from template
+  template:
+    src: zshrc.j2
+    dest: /root/.zshrc
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Ensure SSH directory exists
+  file:
+    path: /root/.ssh
+    state: directory
+    mode: '0700'
+
+- name: Add authorized key (from variable)
+  authorized_key:
+    user: root
+    state: present
+    key: "{{ ssh_public_key }}"
+  when: ssh_public_key is defined and ssh_public_key != ""

@@ -1,0 +1,37 @@
+---
+- name: Install NVIDIA drivers and dependencies
+  apt:
+    name:
+      - pve-headers
+      - nvidia-driver
+      - nvidia-smi
+      - nvidia-cuda-toolkit
+    state: present
+    update_cache: yes
+
+- name: Load NVIDIA kernel modules
+  modprobe:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - nvidia
+    - nvidia_uvm
+
+- name: Ensure NVIDIA modules load on boot
+  lineinfile:
+    path: /etc/modules
+    line: "{{ item }}"
+  loop:
+    - nvidia
+    - nvidia_uvm
+
+- name: Create udev rule for NVIDIA devices
+  copy:
+    dest: /etc/udev/rules.d/70-nvidia.rules
+    content: |
+      KERNEL=="nvidia", RUN+="/bin/bash -c 'mknod -m 666 /dev/nvidia$(echo %n) c 195 $(echo %n)'"
+      KERNEL=="nvidia_uvm", RUN+="/bin/bash -c 'mknod -m 666 /dev/nvidia_uvm c 243 0'"
+      KERNEL=="nvidiactl", RUN+="/bin/bash -c 'mknod -m 666 /dev/nvidiactl c 195 255'"
+
+- name: Trigger udev to create devices
+  command: udevadm trigger

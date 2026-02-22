@@ -1,0 +1,19 @@
+---
+- name: Patch LXC configuration for NVIDIA GPU passthrough
+  lineinfile:
+    path: "/etc/pve/lxc/{{ item.vmid }}.conf"
+    line: "{{ item.line }}"
+  loop:
+    - { vmid: 116, line: 'lxc.cgroup2.devices.allow: c 195:* rwm' }
+    - { vmid: 116, line: 'lxc.cgroup2.devices.allow: c 243:* rwm' }
+    - { vmid: 116, line: 'lxc.mount.entry: /dev/nvidia0 dev/nvidia0 none bind,optional,create=file' }
+    - { vmid: 116, line: 'lxc.mount.entry: /dev/nvidiactl dev/nvidiactl none bind,optional,create=file' }
+    - { vmid: 116, line: 'lxc.mount.entry: /dev/nvidia-uvm dev/nvidia-uvm none bind,optional,create=file' }
+    - { vmid: 116, line: 'lxc.mount.entry: /dev/nvidia-uvm-tools dev/nvidia-uvm-tools none bind,optional,create=file' }
+  when: item.vmid is defined
+  notify: Restart LXC
+
+- name: Set OLLAMA_BASE_URL for OpenWebUI
+  # This is a conceptual task, normally you'd use a template for the app config
+  debug:
+    msg: "Ensure OpenWebUI (117) uses http://ollama:11434 as OLLAMA_BASE_URL"

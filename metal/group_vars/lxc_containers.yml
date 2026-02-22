@@ -1,0 +1,4 @@
+---
+# Variables for LXC containers
+# Used for hardening or common app setup
+timezone: "Europe/Warsaw"
