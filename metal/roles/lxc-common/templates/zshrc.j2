@@ -1,9 +1,15 @@
 export ZSH="$HOME/.oh-my-zsh"
-ZSH_THEME="robbyrussell"
+ZSH_THEME="" # Disabled because Starship is used
 plugins=(git)
 source $ZSH/oh-my-zsh.sh
 
-# User aliases
+# Initializations
+eval "$(starship init zsh)"
+eval "$(zoxide init zsh)"
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# Aliases
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
+alias bat='batcat' # Fix for Debian/Ubuntu package naming

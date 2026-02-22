@@ -29,5 +29,13 @@ The following maintenance tasks are scheduled on the Proxmox host via cron:
 | **LXC Backup** | Monthly (1st @ 02:00) | `vzdump --all` to `/tank/backups/lxc` |
 | **ZFS Scrub** | Monthly (1st @ 04:00) | `zpool scrub tank` |
 
-> [!NOTE]
-> Backups are configured to keep the last 3 snapshots and are compressed using `lzo`. Logs are written to `/var/log/vzdump-tank.log`.
+## Terminal & Shell Environment
+The homelab uses a modern CLI stack across all LXCs:
+- **Shell:** Zsh + Oh My Zsh
+- **Prompt:** [Starship](https://starship.rs/)
+- **Navigation:** `zoxide` (z), `fzf`
+- **Utilities:** `htop`, `mc`, `dfc`, `bat`
+
+### Client Requirements
+To correctly render icons in the Starship prompt and other CLI tools, your terminal (e.g., iTerm2, Kitty) must use a **Nerd Font**.
+- **Recommended:** [JetBrainsMono Nerd Font](https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.1/JetBrainsMono.zip)

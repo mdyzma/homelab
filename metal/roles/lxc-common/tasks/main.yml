@@ -16,7 +16,22 @@
       - sudo
       - htop
       - net-tools
+      - mc
+      - dfc
+      - bat
+      - fzf
+      - zoxide
     state: present
+
+- name: Check if Starship is installed
+  stat:
+    path: /usr/local/bin/starship
+  register: starship_stat
+
+- name: Install Starship
+  shell: |
+    curl -sS https://starship.rs/install.sh | sh -s -- -y
+  when: not starship_stat.stat.exists
 
 - name: Set system timezone
   timezone:
