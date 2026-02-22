@@ -1,0 +1,18 @@
+---
+- name: Ensure LXC backup cron job (monthly)
+  cron:
+    name: "Proxmox LXC backup to ZFS tank"
+    month: "1"
+    day: "1"
+    hour: "2"
+    minute: "0"
+    job: "/usr/sbin/vzdump --all --dumpdir /tank/backups/lxc --mode snapshot --compress lzo --prune-backups keep-last=3 >> /var/log/vzdump-tank.log 2>&1"
+
+- name: Ensure ZFS scrub cron job (monthly)
+  cron:
+    name: "ZFS scrub tank"
+    month: "1"
+    day: "1"
+    hour: "4"
+    minute: "0"
+    job: "/sbin/zpool scrub tank"
